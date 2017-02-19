@@ -52,18 +52,17 @@ function setHoverMarker(feature) {
 
 function fetchDirections() {
   return (dispatch, getState) => {
-    const { api, accessToken, routeIndex, profile } = getState();
-    const query = buildDirectionsQuery(getState);
+      const { api, accessToken, routeIndex, profile, origin, destination, waypoints } = getState();
+      
+    //const query = buildDirectionsQuery(getState);
 
     // Request params
-    var options = [];
-    options.push('geometries=polyline');
-    options.push('alternatives=true');
-    options.push('steps=true');
-    options.push('overview=full');
-    options.push('access_token=' + accessToken);
+      var options = [];
+      options.push('profile=' + 'car');
+      options.push('loc=' + origin.geometry.coordinates[1] + ',' + origin.geometry.coordinates[0]);
+      options.push('loc=' + destination.geometry.coordinates[1] + ',' + destination.geometry.coordinates[0]);
     request.abort();
-    request.open('GET', `${api}mapbox/${profile}/${query}.json?${options.join('&')}`, true);
+    request.open('GET', `${api}routing?${options.join('&')}`, true);
 
     request.onload = () => {
       if (request.status >= 200 && request.status < 400) {
@@ -95,29 +94,29 @@ function fetchDirections() {
   };
 }
 
-/*
- * Build query used to fetch directions
- *
- * @param {Function} state
- */
-function buildDirectionsQuery(state) {
-  const { origin, destination, waypoints } = state();
+///*
+// * Build query used to fetch directions
+// *
+// * @param {Function} state
+// */
+//function buildDirectionsQuery(state) {
+//  const { origin, destination, waypoints } = state();
 
-  let query = [];
-  query.push((origin.geometry.coordinates).join(','));
-  query.push(';');
+//  let query = [];
+//  query.push((origin.geometry.coordinates).join(','));
+//  query.push(';');
 
-  // Add any waypoints.
-  if (waypoints.length) {
-    waypoints.forEach((waypoint) => {
-      query.push((waypoint.geometry.coordinates).join(','));
-      query.push(';');
-    });
-  }
+//  // Add any waypoints.
+//  if (waypoints.length) {
+//    waypoints.forEach((waypoint) => {
+//      query.push((waypoint.geometry.coordinates).join(','));
+//      query.push(';');
+//    });
+//  }
 
-  query.push((destination.geometry.coordinates).join(','));
-  return encodeURIComponent(query.join(''));
-}
+//  query.push((destination.geometry.coordinates).join(','));
+//  return encodeURIComponent(query.join(''));
+//}
 
 function normalizeWaypoint(waypoint) {
   const properties = { id: 'waypoint' };
