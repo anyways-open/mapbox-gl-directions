@@ -171,6 +171,13 @@ export default class MapboxDirections {
         directions.features.forEach((feature, index) => {
             if (feature.geometry &&
                 feature.geometry.type == "LineString") {
+
+                if (feature.properties &&
+                    feature.properties.trip_route_color &&
+                    !feature.properties.trip_route_color.startsWith('#')) {
+                    feature.properties.trip_route_color = '#' + feature.properties.trip_route_color;
+                }
+
                 geojson.features.push(feature);
             }
         });

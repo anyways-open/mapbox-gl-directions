@@ -47,7 +47,7 @@ const style = [{
   'filter': [
     'all',
     ['in', '$type', 'LineString'],
-    ['in', 'profile', 'bicycle']
+    ['in', 'profile', 'bicycle', 'Bicycle']
   ]
 }, 
 {
@@ -65,7 +65,7 @@ const style = [{
     'filter': [
       'all',
       ['in', '$type', 'LineString'],
-      ['in', 'profile', 'pedestrian']
+      ['in', 'profile', 'pedestrian', 'Pedestrian']
     ]
 },
 {
@@ -83,7 +83,74 @@ const style = [{
     'filter': [
       'all',
       ['in', '$type', 'LineString'],
-      ['in', 'profile', 'car']
+      ['in', 'profile', 'car', 'Car']
+    ]
+},
+{
+    'id': 'directions-route-line-transit-back',
+    'type': 'line',
+    'source': 'directions',
+    'layout': {
+        'line-cap': 'round',
+        'line-join': 'round'
+    },
+    'paint': {
+        'line-color': '#fff',
+        "line-width": 7
+    },
+    'filter': [
+      'all',
+      ['in', '$type', 'LineString'],
+      ['has', 'trip_id']
+    ]
+},
+{
+    'id': 'directions-route-line-transit',
+    'type': 'line',
+    'source': 'directions',
+    'layout': {
+        'line-cap': 'round',
+        'line-join': 'round'
+    },
+    'paint': {
+        'line-color': {
+            'property': 'trip_route_color',
+            'type': 'identity'
+        },
+        "line-width": 4
+    },
+    'filter': [
+      'all',
+      ['in', '$type', 'LineString'],
+      ['has', 'trip_id']
+    ]
+},
+{
+    'id': 'directions-route-line-transit-stop1',
+    'type': 'circle',
+    'source': 'directions',
+    'paint': {
+        'circle-radius': 7,
+        'circle-color': "#000"
+    },
+    'filter': [
+      'all',
+      ['in', '$type', 'LineString'],
+      ['has', 'stop_id']
+    ]
+},
+{
+    'id': 'directions-route-line-transit-stop2',
+    'type': 'circle',
+    'source': 'directions',
+    'paint': {
+        'circle-radius': 5,
+        'circle-color': "#fff"
+    },
+    'filter': [
+      'all',
+      ['in', '$type', 'LineString'],
+      ['has', 'stop_id']
     ]
 },
 {

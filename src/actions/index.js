@@ -56,13 +56,23 @@ function fetchDirections() {
       
     //const query = buildDirectionsQuery(getState);
 
-    // Request params
-      var options = [];
-      options.push('profile=' + profile);
-      options.push('loc=' + origin.geometry.coordinates[1] + ',' + origin.geometry.coordinates[0]);
-      options.push('loc=' + destination.geometry.coordinates[1] + ',' + destination.geometry.coordinates[0]);
-    request.abort();
-    request.open('GET', `${api}routing?${options.join('&')}`, true);
+      // Request params
+      if (profile == 'transit') {
+          var options = [];
+          options.push('profile=pedestrian|pedestrian|pedestrian');
+          options.push('time=201702201655');
+          options.push('loc=' + origin.geometry.coordinates[1] + ',' + origin.geometry.coordinates[0]);
+          options.push('loc=' + destination.geometry.coordinates[1] + ',' + destination.geometry.coordinates[0]);
+          request.abort();
+          request.open('GET', `http://antwerpen-api.anyways.eu/fase1/transit/multimodal?${options.join('&')}`, true);
+      } else {
+          var options = [];
+          options.push('profile=' + profile);
+          options.push('loc=' + origin.geometry.coordinates[1] + ',' + origin.geometry.coordinates[0]);
+          options.push('loc=' + destination.geometry.coordinates[1] + ',' + destination.geometry.coordinates[0]);
+          request.abort();
+          request.open('GET', `${api}routing?${options.join('&')}`, true);
+      }
 
     request.onload = () => {
       if (request.status >= 200 && request.status < 400) {
