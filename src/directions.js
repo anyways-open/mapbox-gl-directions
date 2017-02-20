@@ -126,7 +126,13 @@ export default class MapboxDirections {
     this._map.addSource('directions', geojson);
 
     // Add direction specific styles to the map
-    directionsStyle.forEach((style) => this._map.addLayer(style));
+    directionsStyle.forEach((style) => {
+        if (style.type == 'line') {
+            this._map.addLayer(style, "boundary-water");
+        } else {
+            this._map.addLayer(style);
+        }
+    });
 
     if (styles && styles.length) styles.forEach((style) => this._map.addLayer(style));
 
@@ -161,38 +167,12 @@ export default class MapboxDirections {
         })
       };
 
-      if (directions.length) {
-        directions.forEach((feature, index) => {
-
-          const lineString = {
-            geometry: {
-              type: 'LineString',
-              coordinates: decode(feature.geometry, 5).map((c) => {
-                return c.reverse();
-              })
-            },
-            properties: {
-              'route-index': index,
-              route: (index === routeIndex) ? 'selected' : 'alternate'
+      if (directions && directions.features && directions.features.length) {
+        directions.features.forEach((feature, index) => {
+            if (feature.geometry &&
+                feature.geometry.type == "LineString") {
+                geojson.features.push(feature);
             }
-          };
-
-          geojson.features.push(lineString);
-          if (index === routeIndex) {
-            // Collect any possible waypoints from steps
-            feature.legs[0].steps.forEach((d) => {
-              if (d.maneuver.type === 'waypoint') {
-                geojson.features.push({
-                  type: 'Feature',
-                  geometry: d.maneuver.location,
-                  properties: {
-                    id: 'waypoint'
-                  }
-                });
-              }
-            });
-          }
-
         });
       }
 
@@ -291,10 +271,10 @@ export default class MapboxDirections {
     const coords = [e.lngLat.lng, e.lngLat.lat];
     switch (this.isDragging.layer.id) {
       case 'directions-origin-point':
-        this.actions.createOrigin(coords);
+          this.actions.updateOrigin(coords);
       break;
       case 'directions-destination-point':
-        this.actions.createDestination(coords);
+          this.actions.updateDestination(coords);
       break;
       case 'directions-hover-point':
         this.actions.hoverMarker(coords);

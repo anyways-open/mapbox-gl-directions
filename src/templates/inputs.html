@@ -20,33 +20,33 @@
     </div>
   </div>
 
-  <div class='mapbox-directions-profile mapbox-directions-component-keyline mapbox-directions-clearfix'><input
-      id='mapbox-directions-profile-driving-traffic'
-      type='radio'
-      name='profile'
-      <% if (profile === 'driving-traffic') { %>checked<% } %>
-    />
-    <label for='mapbox-directions-profile-driving-traffic'>Traffic</label>
+  <div class='mapbox-directions-profile mapbox-directions-component-keyline mapbox-directions-clearfix'>
     <input
-      id='mapbox-directions-profile-driving'
+      id='mapbox-directions-profile-transit'
       type='radio'
       name='profile'
-      <% if (profile === 'driving') { %>checked<% } %>
+      <% if (profile === 'transit') { %>checked<% } %>
     />
-    <label for='mapbox-directions-profile-driving'>Driving</label>
+    <label for='mapbox-directions-profile-transit'>Transit</label>
     <input
-      id='mapbox-directions-profile-walking'
+      id='mapbox-directions-profile-car'
       type='radio'
       name='profile'
-      <% if (profile === 'walking') { %>checked<% } %>
+      <% if (profile === 'car') { %>checked<% } %>
     />
-    <label for='mapbox-directions-profile-walking'>Walking</label>
+    <label for='mapbox-directions-profile-car'>Driving</label>
+      <input id='mapbox-directions-profile-bicycle'
+             type='radio'
+             name='profile'
+      <% if (profile === 'bicycle') { %>checked<% } %>
+      />
+      <label for='mapbox-directions-profile-bicycle'>Cycling</label>
     <input
-      id='mapbox-directions-profile-cycling'
+      id='mapbox-directions-profile-pedestrian'
       type='radio'
       name='profile'
-      <% if (profile === 'cycling') { %>checked<% } %>
+      <% if (profile === 'pedestrian') { %>checked<% } %>
     />
-    <label for='mapbox-directions-profile-cycling'>Cycling</label>
+    <label for='mapbox-directions-profile-pedestrian'>Walking</label>
   </div>
 </div>

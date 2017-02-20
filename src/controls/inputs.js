@@ -47,9 +47,9 @@ export default class Inputs {
         features: [origin, destination]
       });
 
-      this._map.fitBounds([[bb[0], bb[1]], [bb[2], bb[3]]], { padding: 80 });
+      //this._map.fitBounds([[bb[0], bb[1]], [bb[2], bb[3]]], { padding: 80 });
     } else {
-      this._map.flyTo({ center: coords });
+      //this._map.flyTo({ center: coords });
     }
   }
 
@@ -88,7 +88,7 @@ export default class Inputs {
     this.originInput.on('result', (e) => {
       const coords = e.result.center;
       createOrigin(coords);
-      this.animateToCoordinates('origin', coords);
+      //this.animateToCoordinates('origin', coords);
     });
 
     this.originInput.on('clear', clearOrigin);
@@ -96,7 +96,7 @@ export default class Inputs {
     this.destinationInput.on('result', (e) => {
       const coords = e.result.center;
       createDestination(coords);
-      this.animateToCoordinates('destination', coords);
+      //this.animateToCoordinates('destination', coords);
     });
 
     this.destinationInput.on('clear', clearDestination);
@@ -141,13 +141,13 @@ export default class Inputs {
 
       if (originQueryCoordinates) {
         this.originInput.setInput(originQueryCoordinates);
-        this.animateToCoordinates('origin', originQueryCoordinates);
+        //this.animateToCoordinates('origin', originQueryCoordinates);
         this.actions.queryOriginCoordinates(null);
       }
 
       if (destinationQueryCoordinates) {
         this.destinationInput.setInput(destinationQueryCoordinates);
-        this.animateToCoordinates('destination', destinationQueryCoordinates);
+        //this.animateToCoordinates('destination', destinationQueryCoordinates);
         this.actions.queryDestinationCoordinates(null);
       }
     });

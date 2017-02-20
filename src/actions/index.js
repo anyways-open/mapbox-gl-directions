@@ -58,7 +58,7 @@ function fetchDirections() {
 
     // Request params
       var options = [];
-      options.push('profile=' + 'car');
+      options.push('profile=' + profile);
       options.push('loc=' + origin.geometry.coordinates[1] + ',' + origin.geometry.coordinates[0]);
       options.push('loc=' + destination.geometry.coordinates[1] + ',' + destination.geometry.coordinates[0]);
     request.abort();
@@ -73,12 +73,26 @@ function fetchDirections() {
         }
 
         dispatch(setError(null));
-        if (!data.routes[routeIndex]) dispatch(setRouteIndex(0));
-        dispatch(setDirections(data.routes));
+        //if (!data.routes[routeIndex]) dispatch(setRouteIndex(0));
+        dispatch(setDirections(data));
+
+        var aStop;
+        var bStop;
+        data.features.forEach(function (feature) {
+            if (feature &&
+                feature.geometry &&
+                feature.geometry.type == "Point") {
+                if (!aStop) {
+                    aStop = feature.geometry.coordinates;
+                } else {
+                    bStop = feature.geometry.coordinates;
+                }
+            }
+        });
 
         // Revise origin / destination points
-        dispatch(originPoint(data.waypoints[0].location));
-        dispatch(destinationPoint(data.waypoints[data.waypoints.length - 1].location));
+        dispatch(originPoint(aStop));
+        dispatch(destinationPoint(bStop));
       } else {
         dispatch(setDirections([]));
         return dispatch(setError(JSON.parse(request.responseText).message));
@@ -206,12 +220,26 @@ export function setRouteIndex(routeIndex) {
   };
 }
 
+export function updateOrigin(coordinates) {
+    return (dispatch, getState) => {
+        const { destination } = getState();
+        dispatch(originPoint(coordinates));
+    };
+}
+
 export function createOrigin(coordinates) {
   return (dispatch, getState) => {
     const { destination } = getState();
     dispatch(originPoint(coordinates));
     if (destination.geometry) dispatch(fetchDirections());
   };
+}
+
+export function updateDestination(coordinates) {
+    return (dispatch, getState) => {
+        const { origin } = getState();
+        dispatch(destinationPoint(coordinates));
+    };
 }
 
 export function createDestination(coordinates) {

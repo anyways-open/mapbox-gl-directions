@@ -16,7 +16,24 @@ const style = [{
     ['in', 'route', 'alternate']
   ]
 }, {
-  'id': 'directions-route-line',
+    'id': 'directions-route-line',
+    'type': 'line',
+    'source': 'directions',
+    'layout': {
+        'line-cap': 'round',
+        'line-join': 'round'
+    },
+    'paint': {
+        'line-color': '#fff',
+        "line-width": 12,
+        "line-opacity": 0.75
+    },
+    'filter': [
+      'all',
+      ['in', '$type', 'LineString']
+    ]
+}, {
+  'id': 'directions-route-line-bicycle',
   'type': 'line',
   'source': 'directions',
   'layout': {
@@ -24,15 +41,52 @@ const style = [{
     'line-join': 'round'
   },
   'paint': {
-    'line-color': '#3bb2d0',
-    'line-width': 4
+      'line-color': '#3bb2d0',
+      "line-width": 6
   },
   'filter': [
     'all',
     ['in', '$type', 'LineString'],
-    ['in', 'route', 'selected']
+    ['in', 'profile', 'bicycle']
   ]
-}, {
+}, 
+{
+    'id': 'directions-route-line-pedestrian',
+    'type': 'line',
+    'source': 'directions',
+    'layout': {
+        'line-cap': 'round',
+        'line-join': 'round'
+    },
+    'paint': {
+        'line-color': '#3bb2d0',
+        "line-width": 4
+    },
+    'filter': [
+      'all',
+      ['in', '$type', 'LineString'],
+      ['in', 'profile', 'pedestrian']
+    ]
+},
+{
+    'id': 'directions-route-line-car',
+    'type': 'line',
+    'source': 'directions',
+    'layout': {
+        'line-cap': 'round',
+        'line-join': 'round'
+    },
+    'paint': {
+        'line-color': '#3bb2d0',
+        "line-width": 8
+    },
+    'filter': [
+      'all',
+      ['in', '$type', 'LineString'],
+      ['in', 'profile', 'car']
+    ]
+},
+{
   'id': 'directions-hover-point-casing',
   'type': 'circle',
   'source': 'directions',
