@@ -60,11 +60,11 @@ function fetchDirections() {
       if (profile == 'transit') {
           var options = [];
           options.push('profile=pedestrian|pedestrian|pedestrian');
-          options.push('time=201702201655');
+          options.push('time=201703201655');
           options.push('loc=' + origin.geometry.coordinates[1] + ',' + origin.geometry.coordinates[0]);
           options.push('loc=' + destination.geometry.coordinates[1] + ',' + destination.geometry.coordinates[0]);
           request.abort();
-          request.open('GET', `http://antwerpen-api.anyways.eu/fase1/transit/multimodal?${options.join('&')}`, true);
+          request.open('GET', `${api}multimodal?${options.join('&')}`, true);
       } else {
           var options = [];
           options.push('profile=' + profile);

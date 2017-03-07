@@ -136,7 +136,7 @@ const style = [{
     'filter': [
       'all',
       ['in', '$type', 'LineString'],
-      ['has', 'stop_id']
+      ['has', 'trip_id']
     ]
 },
 {
@@ -150,7 +150,7 @@ const style = [{
     'filter': [
       'all',
       ['in', '$type', 'LineString'],
-      ['has', 'stop_id']
+      ['has', 'trip_id']
     ]
 },
 {

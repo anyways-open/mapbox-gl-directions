@@ -4,10 +4,10 @@ import deepAssign from 'deep-assign';
 const initialState = {
   // Options set on initialization
     api: 'http://test-api.anyways.eu/belgium/',
-  profile: 'car',
-  unit: 'imperial',
-  proximity: false,
-  styles: [],
+    profile: 'car',
+    unit: 'imperial',
+    proximity: false,
+    styles: [],
 
   // UI controls
   controls: {
