@@ -41,7 +41,7 @@ const style = [{
     'line-join': 'round'
   },
   'paint': {
-      'line-color': '#3bb2d0',
+      'line-color': '#ed6607',
       "line-width": 6
   },
   'filter': [
@@ -59,7 +59,7 @@ const style = [{
         'line-join': 'round'
     },
     'paint': {
-        'line-color': '#3bb2d0',
+        'line-color': '#237a03',
         "line-width": 4
     },
     'filter': [
