@@ -22,18 +22,25 @@
 
   <div class='mapbox-directions-profile mapbox-directions-component-keyline mapbox-directions-clearfix'>
     <input
+      id='mapbox-directions-profile-bigtruck'
+      type='radio'
+      name='profile'
+      <% if (profile === 'bigtruck') { %>checked<% } %>
+    />
+    <label for='mapbox-directions-profile-bigtruck'>Vrachtwagen</label>
+    <input
       id='mapbox-directions-profile-car'
       type='radio'
       name='profile'
       <% if (profile === 'car') { %>checked<% } %>
     />
     <label for='mapbox-directions-profile-car'>Auto</label>
-      <input id='mapbox-directions-profile-bicycle'
+    <input id='mapbox-directions-profile-bicycle'
              type='radio'
              name='profile'
       <% if (profile === 'bicycle') { %>checked<% } %>
-      />
-      <label for='mapbox-directions-profile-bicycle'>Fiets</label>
+    />
+    <label for='mapbox-directions-profile-bicycle'>Fiets</label>
     <input
       id='mapbox-directions-profile-pedestrian'
       type='radio'
