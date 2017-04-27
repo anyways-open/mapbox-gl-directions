@@ -48,9 +48,9 @@ export default class MapboxDirections {
     this.actions.setOptions(options || {});
     this.options = options || {};
 
-    this.onDragDown = this._onDragDown.bind(this);
-    this.onDragMove = this._onDragMove.bind(this);
-    this.onDragUp = this._onDragUp.bind(this);
+    //this.onDragDown = this._onDragDown.bind(this);
+    //this.onDragMove = this._onDragMove.bind(this);
+    //this.onDragUp = this._onDragUp.bind(this);
     this.move = this._move.bind(this);
     this.onClick = this._onClick.bind(this);
   }
@@ -124,6 +124,7 @@ export default class MapboxDirections {
 
     // Add and set data theme layer/style
     this._map.addSource('directions', geojson);
+    this._map.addSource('directions1', geojson);
 
     // Add direction specific styles to the map
     directionsStyle.forEach((style) => {
@@ -153,6 +154,7 @@ export default class MapboxDirections {
         destination,
         hoverMarker,
         directions,
+        directions1,
         routeIndex
       } = store.getState();
 
@@ -167,25 +169,61 @@ export default class MapboxDirections {
         })
       };
 
-      if (directions && directions.features && directions.features.length) {
-        directions.features.forEach((feature, index) => {
-            if (feature.geometry &&
-                feature.geometry.type == "LineString") {
+      if (directions) {
+        if (directions.features && directions.features.length) {
+          directions.features.forEach((feature, index) => {
+              if (feature.geometry &&
+                  feature.geometry.type == "LineString") {
 
-                if (feature.properties &&
-                    feature.properties.trip_route_color &&
-                    !feature.properties.trip_route_color.startsWith('#')) {
-                    feature.properties.trip_route_color = '#' + feature.properties.trip_route_color;
-                }
+                  if (feature.properties &&
+                      feature.properties.trip_route_color &&
+                      !feature.properties.trip_route_color.startsWith('#')) {
+                      feature.properties.trip_route_color = '#' + feature.properties.trip_route_color;
+                  }
 
-                geojson.features.push(feature);
-            }
-        });
+                  geojson.features.push(feature);
+              }
+          });
+        }
       }
 
-      if (this._map.style && this._map.getSource('directions')) {
-        this._map.getSource('directions').setData(geojson);
+      const geojson1 = {
+        type: 'FeatureCollection',
+        features: [
+          origin,
+          destination,
+          hoverMarker
+        ].filter((d) => {
+          return d.geometry;
+        })
+      };
+      
+      if (directions1) {
+        if (directions1.features && directions1.features.length) {
+          directions1.features.forEach((feature, index) => {
+              if (feature.geometry &&
+                  feature.geometry.type == "LineString") {
+
+                  if (feature.properties &&
+                      feature.properties.trip_route_color &&
+                      !feature.properties.trip_route_color.startsWith('#')) {
+                      feature.properties.trip_route_color = '#' + feature.properties.trip_route_color;
+                  }
+
+                  geojson1.features.push(feature);
+              }
+          });
+        }
       }
+
+
+        if (this._map.style && this._map.getSource('directions')) {
+          this._map.getSource('directions').setData(geojson);
+        }
+        
+        if (this._map.style && this._map.getSource('directions1')) {
+          this._map.getSource('directions1').setData(geojson1);
+        }
     });
   }
 

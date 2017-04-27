@@ -1,6 +1,7 @@
 import * as types from '../constants/action_types';
 import utils from '../utils';
 const request = new XMLHttpRequest();
+const request1 = new XMLHttpRequest();
 
 function originPoint(coordinates) {
   return (dispatch) => {
@@ -36,6 +37,16 @@ function setDirections(directions) {
   };
 }
 
+function setDirections1(directions) {
+  return dispatch => {
+    dispatch({
+      type: types.DIRECTIONS1,
+      directions
+    });
+    dispatch(eventEmit('route', { route: directions }));
+  };
+}
+
 function updateWaypoints(waypoints) {
   return {
     type: types.WAYPOINTS,
@@ -52,11 +63,9 @@ function setHoverMarker(feature) {
 
 function fetchDirections() {
   return (dispatch, getState) => {
-      const { api, accessToken, routeIndex, profile, origin, destination, waypoints } = getState();
+      const { api, api1, accessToken, routeIndex, profile, origin, destination, waypoints } = getState();
       
-    //const query = buildDirectionsQuery(getState);
-
-      // Request params
+      // build request for first route.
       if (profile == 'transit') {
           var options = [];
           options.push('profile=pedestrian|pedestrian|pedestrian');
@@ -115,32 +124,68 @@ function fetchDirections() {
     };
 
     request.send();
+    
+      // build request for second route.
+      if (profile == 'transit') {
+          var options = [];
+          options.push('profile=pedestrian|pedestrian|pedestrian');
+          options.push('time=201703201655');
+          options.push('loc=' + origin.geometry.coordinates[1] + ',' + origin.geometry.coordinates[0]);
+          options.push('loc=' + destination.geometry.coordinates[1] + ',' + destination.geometry.coordinates[0]);
+          request1.abort();
+          request1.open('GET', `${api1}multimodal?${options.join('&')}`, true);
+      } else {
+          var options = [];
+          options.push('profile=' + profile);
+          options.push('loc=' + origin.geometry.coordinates[1] + ',' + origin.geometry.coordinates[0]);
+          options.push('loc=' + destination.geometry.coordinates[1] + ',' + destination.geometry.coordinates[0]);
+          request1.abort();
+          request1.open('GET', `${api1}routing?${options.join('&')}`, true);
+      }
+
+    request1.onload = () => {
+      if (request1.status >= 200 && request1.status < 400) {
+        var data = JSON.parse(request1.responseText);
+        if (data.error) {
+          dispatch(setDirections1([]));
+          return dispatch(setError(data.error));
+        }
+
+        dispatch(setError(null));
+        //if (!data.routes[routeIndex]) dispatch(setRouteIndex(0));
+        dispatch(setDirections1(data));
+
+        var aStop;
+        var bStop;
+        data.features.forEach(function (feature) {
+            if (feature &&
+                feature.geometry &&
+                feature.geometry.type == "Point") {
+                if (!aStop) {
+                    aStop = feature.geometry.coordinates;
+                } else {
+                    bStop = feature.geometry.coordinates;
+                }
+            }
+        });
+
+        // Revise origin / destination points
+        dispatch(originPoint(aStop));
+        dispatch(destinationPoint(bStop));
+      } else {
+        dispatch(setDirections1([]));
+        return dispatch(setError(JSON.parse(request1.responseText).message));
+      }
+    };
+
+    request1.onerror = () => {
+      dispatch(setDirections1([]));
+      return dispatch(setError(JSON.parse(request1.responseText).message));
+    };
+
+    request1.send();
   };
 }
-
-///*
-// * Build query used to fetch directions
-// *
-// * @param {Function} state
-// */
-//function buildDirectionsQuery(state) {
-//  const { origin, destination, waypoints } = state();
-
-//  let query = [];
-//  query.push((origin.geometry.coordinates).join(','));
-//  query.push(';');
-
-//  // Add any waypoints.
-//  if (waypoints.length) {
-//    waypoints.forEach((waypoint) => {
-//      query.push((waypoint.geometry.coordinates).join(','));
-//      query.push(';');
-//    });
-//  }
-
-//  query.push((destination.geometry.coordinates).join(','));
-//  return encodeURIComponent(query.join(''));
-//}
 
 function normalizeWaypoint(waypoint) {
   const properties = { id: 'waypoint' };

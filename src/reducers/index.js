@@ -4,6 +4,7 @@ import deepAssign from 'deep-assign';
 const initialState = {
   // Options set on initialization
     api: 'http://test-api.anyways.eu/belgium/',
+    api1: 'http://test-api.anyways.eu/belgium/',
     profile: 'car',
     unit: 'imperial',
     proximity: false,
@@ -97,7 +98,8 @@ function data(state = initialState, action) {
       origin: {},
       originQuery: '',
       waypoints: [],
-      directions: []
+      directions: [],
+      directions1: []
     });
 
   case types.DESTINATION_CLEAR:
@@ -105,12 +107,18 @@ function data(state = initialState, action) {
       destination: {},
       destinationQuery: '',
       waypoints: [],
-      directions: []
+      directions: [],
+      directions1: []
     });
 
   case types.DIRECTIONS:
     return Object.assign({}, state, {
       directions: action.directions
+    });
+    
+  case types.DIRECTIONS1:
+    return Object.assign({}, state, {
+      directions1: action.directions
     });
 
   case types.ROUTE_INDEX:

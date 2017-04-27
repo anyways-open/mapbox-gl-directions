@@ -67,7 +67,7 @@ export default class Inputs {
 
     this.originInput = new Geocoder(Object.assign({}, {
       flyTo: false,
-      placeholder: 'Choose a starting place',
+      placeholder: 'Kies start locatie',
       accessToken: accessToken
     }, geocoder));
 
@@ -77,7 +77,7 @@ export default class Inputs {
 
     this.destinationInput = new Geocoder(Object.assign({}, {
       flyTo: false,
-      placeholder: 'Choose destination',
+      placeholder: 'Kies bestemming',
       accessToken: accessToken
     }, geocoder));
 
@@ -140,13 +140,15 @@ export default class Inputs {
       }
 
       if (originQueryCoordinates) {
-        this.originInput.setInput(originQueryCoordinates);
+        //this.originInput.setInput(originQueryCoordinates);
+        this.originInput.query(originQueryCoordinates);
         //this.animateToCoordinates('origin', originQueryCoordinates);
         this.actions.queryOriginCoordinates(null);
       }
 
       if (destinationQueryCoordinates) {
-        this.destinationInput.setInput(destinationQueryCoordinates);
+        //this.destinationInput.setInput(destinationQueryCoordinates);
+        this.destinationInput.query(destinationQueryCoordinates);
         //this.animateToCoordinates('destination', destinationQueryCoordinates);
         this.actions.queryDestinationCoordinates(null);
       }
