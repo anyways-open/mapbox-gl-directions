@@ -143,8 +143,8 @@
 /* Basics */
 .mapboxgl-ctrl-directions {
   width: 33.33333%;
-  min-width: 300px;
-  max-width: 300px;
+  min-width: 320px;
+  max-width: 320px;
 }
 .mapbox-directions-component {
   position: relative;

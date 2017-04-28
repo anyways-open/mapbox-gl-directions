@@ -3,8 +3,7 @@ import deepAssign from 'deep-assign';
 
 const initialState = {
   // Options set on initialization
-    api: 'http://test-api.anyways.eu/belgium/',
-    api1: 'http://test-api.anyways.eu/belgium/',
+    api: '',
     profile: 'car',
     unit: 'imperial',
     proximity: false,

@@ -126,64 +126,66 @@ function fetchDirections() {
     request.send();
     
       // build request for second route.
-      if (profile == 'transit') {
-          var options = [];
-          options.push('profile=pedestrian|pedestrian|pedestrian');
-          options.push('time=201703201655');
-          options.push('loc=' + origin.geometry.coordinates[1] + ',' + origin.geometry.coordinates[0]);
-          options.push('loc=' + destination.geometry.coordinates[1] + ',' + destination.geometry.coordinates[0]);
-          request1.abort();
-          request1.open('GET', `${api1}multimodal?${options.join('&')}`, true);
-      } else {
-          var options = [];
-          options.push('profile=' + profile);
-          options.push('loc=' + origin.geometry.coordinates[1] + ',' + origin.geometry.coordinates[0]);
-          options.push('loc=' + destination.geometry.coordinates[1] + ',' + destination.geometry.coordinates[0]);
-          request1.abort();
-          request1.open('GET', `${api1}routing?${options.join('&')}`, true);
-      }
-
-    request1.onload = () => {
-      if (request1.status >= 200 && request1.status < 400) {
-        var data = JSON.parse(request1.responseText);
-        if (data.error) {
-          dispatch(setDirections1([]));
-          return dispatch(setError(data.error));
+      
+    if (api1) {
+        if (profile == 'transit') {
+            var options = [];
+            options.push('profile=pedestrian|pedestrian|pedestrian');
+            options.push('time=201703201655');
+            options.push('loc=' + origin.geometry.coordinates[1] + ',' + origin.geometry.coordinates[0]);
+            options.push('loc=' + destination.geometry.coordinates[1] + ',' + destination.geometry.coordinates[0]);
+            request1.abort();
+            request1.open('GET', `${api1}multimodal?${options.join('&')}`, true);
+        } else {
+            var options = [];
+            options.push('profile=' + profile);
+            options.push('loc=' + origin.geometry.coordinates[1] + ',' + origin.geometry.coordinates[0]);
+            options.push('loc=' + destination.geometry.coordinates[1] + ',' + destination.geometry.coordinates[0]);
+            request1.abort();
+            request1.open('GET', `${api1}routing?${options.join('&')}`, true);
         }
+      request1.onload = () => {
+        if (request1.status >= 200 && request1.status < 400) {
+          var data = JSON.parse(request1.responseText);
+          if (data.error) {
+            dispatch(setDirections1([]));
+            return dispatch(setError(data.error));
+          }
 
-        dispatch(setError(null));
-        //if (!data.routes[routeIndex]) dispatch(setRouteIndex(0));
-        dispatch(setDirections1(data));
+          dispatch(setError(null));
+          //if (!data.routes[routeIndex]) dispatch(setRouteIndex(0));
+          dispatch(setDirections1(data));
 
-        var aStop;
-        var bStop;
-        data.features.forEach(function (feature) {
-            if (feature &&
-                feature.geometry &&
-                feature.geometry.type == "Point") {
-                if (!aStop) {
-                    aStop = feature.geometry.coordinates;
-                } else {
-                    bStop = feature.geometry.coordinates;
-                }
-            }
-        });
+          var aStop;
+          var bStop;
+          data.features.forEach(function (feature) {
+              if (feature &&
+                  feature.geometry &&
+                  feature.geometry.type == "Point") {
+                  if (!aStop) {
+                      aStop = feature.geometry.coordinates;
+                  } else {
+                      bStop = feature.geometry.coordinates;
+                  }
+              }
+          });
 
-        // Revise origin / destination points
-        dispatch(originPoint(aStop));
-        dispatch(destinationPoint(bStop));
-      } else {
+          // Revise origin / destination points
+          dispatch(originPoint(aStop));
+          dispatch(destinationPoint(bStop));
+        } else {
+          dispatch(setDirections1([]));
+          return dispatch(setError(JSON.parse(request1.responseText).message));
+        }
+      };
+
+      request1.onerror = () => {
         dispatch(setDirections1([]));
         return dispatch(setError(JSON.parse(request1.responseText).message));
-      }
-    };
+      };
 
-    request1.onerror = () => {
-      dispatch(setDirections1([]));
-      return dispatch(setError(JSON.parse(request1.responseText).message));
-    };
-
-    request1.send();
+      request1.send();
+    }
   };
 }
 
