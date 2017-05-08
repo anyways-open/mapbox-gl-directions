@@ -62,10 +62,10 @@ function data(state = initialState, action) {
       hoverMarker: {}
     });
 
-  case types.HOVER_MARKER:
-    return Object.assign({}, state, {
-      hoverMarker: action.hoverMarker
-    });
+  // case types.HOVER_MARKER:
+  //   return Object.assign({}, state, {
+  //     hoverMarker: action.hoverMarker
+  //   });
 
   case types.WAYPOINTS:
     return Object.assign({}, state, {
