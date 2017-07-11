@@ -1,7 +1,7 @@
 Mapbox GL Directions
 ---
 
-A full featured directions plugin for [mapbox-gl-js](https://github.com/mapbox/mapbox-gl-js) using the [Mapbox Directions API](https://www.mapbox.com/developers/api/directions/).
+This is a modified version of the awesome Mapbox GL JS directions control. This one does **not** use the mapbox directions api but allows using the one from [Itinero](http://itinero.tech).
 
 ### Usage
 
@@ -10,9 +10,14 @@ var mapboxgl = require('mapbox-gl');
 var MapboxDirections = require('@mapbox/mapbox-gl-directions');
 
 var directions = new MapboxDirections({
-  accessToken: 'YOUR-MAPBOX-ACCESS-TOKEN',
-  unit: 'metric',
-  profile: 'cycling'
+     accessToken: mapboxgl.accessToken, 
+     api: 'http://opa-api.anyways.eu/mol/1/',
+     api1: '',
+     unit: 'metric',
+     profile: 'car',
+     geocoder: {
+       accessToken: mapboxgl.accessToken
+     }
 });
 
 var map = new mapboxgl.Map({
@@ -23,12 +28,5 @@ var map = new mapboxgl.Map({
 map.addControl(directions, 'top-left');
 ```
 
-Live example: https://www.mapbox.com/mapbox-gl-js/example/mapbox-gl-directions/
+Live example: http://opa.anyways.eu/mol/1/
 
-### Deeper dive
-
-See [API.md](https://github.com/mapbox/mapbox-gl-directions/blob/master/API.md) for complete reference.
-
-### Contributing
-
-See [CONTRIBUTING.md](https://github.com/mapbox/mapbox-gl-directions/blob/master/CONTRIBUTING.md).
