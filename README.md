@@ -28,5 +28,12 @@ var map = new mapboxgl.Map({
 map.addControl(directions, 'top-left');
 ```
 
+This sends requests for example:
+
+http://opa-api.anyways.eu/mol/1/routing?profile=car&loc=51.18758,5.092704&loc=51.1876671,5.1049834
+
+- profile: car/bicycle/pedestrian
+- loc: from/to locations
+
 Live example: http://opa.anyways.eu/mol/1/
 
