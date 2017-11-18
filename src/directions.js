@@ -432,6 +432,16 @@ export default class MapboxDirections {
 
     return this;
   }
+  
+  /**
+   * Swap the origin and destination.
+   * @param {String} profile The profile to use in the route request.
+   * @returns {MapboxDirections} this
+  */
+  setProfile(profile) {
+    this.actions.setProfile(profile);
+    return this;
+  }
 
   /**
    * Swap the origin and destination.
